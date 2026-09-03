@@ -1,0 +1,45 @@
+<Project Sdk="VolocyNazad.Revit.Sdk/1.0.43">
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <OutputType>Exe</OutputType>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <NoWarn>CS1591</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Configurations>
+      Debug_2021.1.4;Debug_2021.1.9;Debug_2023.0.0;Debug_2025.0.0;
+      Release_2011.0.0;Release_2011.0.1;Release_2012.0.0;Release_2012.0.1;
+      Release_2013.0.0;Release_2013.0.1;Release_2014.0.0;Release_2014.0.1;
+      Release_2015.0.0;Release_2015.0.1;Release_2016.0.0;Release_2016.0.1;
+      Release_2016.0.2;Release_2017.0.0;Release_2017.0.1;Release_2017.0.2;
+      Release_2018.0.0;Release_2018.0.1;Release_2018.0.2;Release_2019.0.0;
+      Release_2019.0.1;Release_2020.0.0;Release_2020.0.1;Release_2021.0.0;
+      Release_2021.1.4;Release_2021.1.9;Release_2022.0.0;Release_2022.1.0;
+      Release_2023.0.0;Release_2024.0.0;Release_2024.2.0;Release_2025.0.0;
+      Release_2026.0.0;Release_2027.0.0;Release_2027.0.2
+    </Configurations>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Nice3point.TUnit.Revit" Version="$(MajorRevitVersion).*" />
+    <!--
+      TUnit's source generator emits a [ModuleInitializer]-attributed method in this assembly.
+      System.Runtime.CompilerServices.ModuleInitializerAttribute only exists in the BCL from
+      .NET 5 onward; the net48 configurations (Debug_2021.1.4, Release_2021.*) need PolySharp's
+      polyfill for it, or the build fails with CS0122. revit.linter avoids this per-project
+      reference by making PolySharp a GlobalPackageReference in its (centrally managed)
+      Directory.Packages.props - this repo has no central package management, so it's pinned
+      here directly, on the one project that actually needs it.
+    -->
+    <PackageReference Include="PolySharp" Version="1.16.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Revit.Sugar\Revit.Sugar.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,47 @@
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+
+jobs:
+  build:
+    name: windows-latest
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        configuration: [
+          "Release_2021.1.9", "Release_2023.0.0", "Release_2025.0.0"
+        ]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Check for version tag
+      id: tag_check
+      run: |
+        $tag = git tag --points-at HEAD
+        $isTagged = [bool]$tag
+        Write-Host "Tag(s) at HEAD: $tag"
+        echo "is_tagged=$($isTagged.ToString().ToLower())" >> $env:GITHUB_OUTPUT
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v4
+    - name: Build library
+      # tests/Revit.Sugar.RevitTests needs a locally installed, licensed Revit to run (same as
+      # revit.linter's *.RevitTests projects) - not runnable on a hosted GitHub Actions runner,
+      # so CI builds the library only and does not invoke `dotnet test`.
+      run: |
+        dotnet build src/Revit.Sugar/Revit.Sugar.csproj --configuration "${{ matrix.configuration }}" /nologo
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: VolocyNazad.Revit.Sugar
+        path: artifacts/*
+    - name: Publish NuGet package
+      if: github.event_name == 'push' && steps.tag_check.outputs.is_tagged == 'true'
+      run: |
+        foreach($file in (Get-ChildItem "artifacts/" -Recurse -Include *.nupkg)) {
+            dotnet nuget push $file --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+        }
