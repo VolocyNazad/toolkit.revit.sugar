@@ -1,4 +1,4 @@
-﻿using Autodesk.Revit.DB;
+using Autodesk.Revit.DB;
 
 namespace Revit.Sugar;
 
@@ -36,6 +36,8 @@ public static class ElementFilterUtils
     /// <returns>An <see cref="Autodesk.Revit.DB.ElementMulticategoryFilter"/> built from the matching categories.</returns>
     public static ElementFilter CategoryTypeFilter(Document doc, CategoryType categoryType = CategoryType.Model, bool inverse = false)
     {
+        doc = Guard.ThrowIfNull(doc, nameof(doc));
+
         Categories categories = doc.Settings.Categories;
         ICollection<ElementId> ids = new List<ElementId>(categories.Size);
         foreach (Category category in categories)

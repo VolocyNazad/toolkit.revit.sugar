@@ -26,6 +26,9 @@ public static class BoundingBoxXyzExtensions
         /// </returns>
         public bool Overlaps(BoundingBoxXYZ other, double tolerance = DefaultTolerance)
         {
+            boundingBox = Guard.ThrowIfNull(boundingBox, nameof(boundingBox));
+            other = Guard.ThrowIfNull(other, nameof(other));
+
             if (boundingBox.Transform.IsIdentity && other.Transform.IsIdentity)
             {
                 return !(boundingBox.Max.X < other.Min.X - tolerance
