@@ -4,6 +4,7 @@ using Revit.Sugar;
 
 namespace Revit.Sugar.RevitTests;
 
+[System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores", Justification = "Test names use underscores to separate scenario and expected result.")]
 public sealed class BoundingBoxXyzExtensionsTests : RevitApiTest
 {
     private static BoundingBoxXYZ CreateBox(XYZ min, XYZ max, Transform? transform = null)

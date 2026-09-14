@@ -6,6 +6,7 @@ using TUnit.Core.Executors;
 
 namespace Revit.Sugar.RevitTests;
 
+[System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores", Justification = "Test names use underscores to separate scenario and expected result.")]
 public sealed class FilteredElementCollectorExtensionsTests : RevitApiTest
 {
     private Document? _document;
