@@ -1,48 +1,48 @@
 # Revit.Sugar
 
-[![Revit 2021-2027](https://img.shields.io/badge/Revit-2021–2027-green.svg)](https://autodesk.com/revit)
+[![Revit 2021.1.9, 2023, 2025](https://img.shields.io/badge/Revit-2021.1.9%20%7C%202023%20%7C%202025-green.svg)](https://autodesk.com/revit)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![VolocyNazad](https://img.shields.io/badge/VolocyNazad-blue.svg)](https://github.com/VolocyNazad)
 
-> Синтаксический сахар для работы с Revit API: extension-методы и небольшие хелперы без DI и без состояния.
+> Syntactic sugar for working with the Revit API: extension methods and small helpers with no DI and no state.
 
-Revit.Sugar — набор extension-методов и статических хелперов, упрощающих типовые операции с объектами Revit API: пересечение bounding box'ов, работа с `ElementId` без оглядки на версию API, обёртки над `FilteredElementCollector`, фабрики `ElementFilter`, fluent-билдер `IUpdater`.
+Revit.Sugar — a set of extension methods and static helpers that simplify common operations on Revit API objects: bounding box intersection, `ElementId` handling that doesn't depend on the API version, wrappers over `FilteredElementCollector`, `ElementFilter` factories, and a fluent `IUpdater` builder.
 
-## Возможности
+## Features
 
-- `BoundingBoxXYZ.Overlaps(other, tolerance)` — быстрая проверка пересечения мировых границ двух bounding box'ов (с учётом `Transform`), подходит как broad-phase проверка перед точным геометрическим пересечением.
-- `ElementId.IsCategory(category)`, `.ToBuiltInCategory()`, `.Value()` — скрывают разницу между `IntegerValue` (до Revit 2024) и `Value` (2024+).
-- `Category.BuiltInCategory` — то же самое для `Category` (только для версий до 2024).
-- `FilteredElementCollector.OfClass<T>()`, `.WhereElementIs<T>()` — дженерик-обёртки над `OfClass`/`WhereElementIsElementType`/`WhereElementIsNotElementType`.
-- `ElementFilterUtils.AllFilter()`, `.EmptyFilter()`, `.CategoryTypeFilter(doc, categoryType, inverse)` — готовые фабрики `ElementFilter`.
-- `UpdaterBuilder` — fluent-билдер `IUpdater` без ручной реализации интерфейса.
+- `BoundingBoxXYZ.Overlaps(other, tolerance)` — a fast check for whether two bounding boxes' world bounds intersect (accounting for `Transform`), suitable as a broad-phase check before exact geometric intersection.
+- `ElementId.IsCategory(category)`, `.ToBuiltInCategory()`, `.Value()` — hide the difference between `IntegerValue` (before Revit 2024) and `Value` (2024+).
+- `Category.BuiltInCategory` — the same for `Category` (versions before 2024 only).
+- `FilteredElementCollector.OfClass<T>()`, `.WhereElementIs<T>()` — generic wrappers over `OfClass`/`WhereElementIsElementType`/`WhereElementIsNotElementType`.
+- `ElementFilterUtils.AllFilter()`, `.EmptyFilter()`, `.CategoryTypeFilter(doc, categoryType, inverse)` — ready-made `ElementFilter` factories.
+- `UpdaterBuilder` — a fluent `IUpdater` builder that avoids implementing the interface by hand.
 
-## Установка
+## Installation
 
 ```
 dotnet add package VolocyNazad.Revit.Sugar
 ```
 
-## Использование
+## Usage
 
 ```csharp
 using Revit.Sugar;
 
-// Пересечение bounding box'ов
+// Bounding box intersection
 bool overlaps = boxA.Overlaps(boxB);
 
-// ElementId, независимо от версии Revit
+// ElementId, independent of the Revit version
 BuiltInCategory category = elementId.ToBuiltInCategory();
 bool isWalls = elementId.IsCategory(BuiltInCategory.OST_Walls);
 
 // FilteredElementCollector
 var walls = new FilteredElementCollector(doc).WhereElementIs<Wall>().ToElements();
 
-// Фабрики фильтров
+// Filter factories
 ElementFilter all = ElementFilterUtils.AllFilter();
 ElementFilter modelCategories = ElementFilterUtils.CategoryTypeFilter(doc, CategoryType.Model);
 
-// IUpdater без ручной реализации интерфейса
+// IUpdater without implementing the interface by hand
 IUpdater updater = new UpdaterBuilder()
     .SetUpdaterId(new UpdaterId(addinId, new Guid("...")))
     .SetUpdaterName("My Updater")
@@ -51,15 +51,24 @@ IUpdater updater = new UpdaterBuilder()
     .Build();
 ```
 
-## Поддерживаемые версии Revit
+## Supported Revit versions
 
-Пакет собирается под версии Revit 2021–2027 (см. конфигурации в `Revit.Sugar.csproj`), таргетируя `net48` для версий до 2025 и `net8.0-windows` для 2025+.
+The package is built and tested for Revit 2021.1.9, 2023.0.0, and 2025.0.0. Revit 2021 and 2023 target net48; Revit 2025 targets net8.0-windows.
 
-## Требования
+## Requirements
 
-- .NET SDK 10.0.103+ (см. `global.json`)
-- Revit API (пакет `Revit_All_Main_Versions_API_x64`)
+- .NET SDK 10.0.103+ (see `global.json`)
+- Revit API (the `Revit_All_Main_Versions_API_x64` package)
 
-## Лицензия
+## License
 
-MIT, см. [LICENSE](LICENSE).
+MIT, see [LICENSE](LICENSE).
+
+## Development documentation
+
+- [Development policy](docs/policies/development.md)
+- [Repository guide and technology stack](docs/repository.md)
+
+## Contributing
+
+Read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting changes.
