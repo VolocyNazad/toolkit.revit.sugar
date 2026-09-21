@@ -1,4 +1,4 @@
-<Project Sdk="VolocyNazad.Revit.Sdk/1.0.44">
+﻿<Project Sdk="VolocyNazad.Revit.Sdk/1.0.44">
   <PropertyGroup>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
@@ -36,6 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="Polyfill" Version="11.2.0" />
+    <PackageReference Update="Polyfill" Version="11.4.0" />
   </ItemGroup>
 </Project>
