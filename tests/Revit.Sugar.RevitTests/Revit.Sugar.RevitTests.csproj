@@ -1,4 +1,4 @@
-﻿<Project Sdk="VolocyNazad.Revit.Sdk/1.0.44">
+﻿<Project Sdk="VolocyNazad.Revit.Sdk/1.1.0">
   <PropertyGroup>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
@@ -9,8 +9,8 @@
 
   <PropertyGroup>
     <Configurations>
-      Debug_2021.1.9;Debug_2023.0.0;Debug_2025.0.0;
-      Release_2021.1.9;Release_2023.0.0;Release_2025.0.0
+      Debug_2021.1.100;Debug_2022.1.80;Debug_2023.1.90;Debug_2024.3.60;Debug_2025.4.60;Debug_2026.4.10;Debug_2027.3.0;
+      Release_2021.1.100;Release_2022.1.80;Release_2023.1.90;Release_2024.3.60;Release_2025.4.60;Release_2026.4.10;Release_2027.3.0
     </Configurations>
   </PropertyGroup>
 
@@ -19,7 +19,7 @@
     <!--
       TUnit's source generator emits a [ModuleInitializer]-attributed method in this assembly.
       System.Runtime.CompilerServices.ModuleInitializerAttribute only exists in the BCL from
-      .NET 5 onward; the net48 configurations (Revit 2021.1.9 and 2023.0.0) need PolySharp's
+      .NET 5 onward; the net48 configurations (Revit 2021-2024) need PolySharp's
       polyfill for it, or the build fails with CS0122. revit.linter avoids this per-project
       reference by making PolySharp a GlobalPackageReference in its (centrally managed)
       Directory.Packages.props - this repo has no central package management, so it's pinned
