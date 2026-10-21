@@ -1,0 +1,15 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>false</CentralPackageTransitivePinningEnabled>
+    <CentralRevitVersion Condition="$(Configuration.Contains('_'))">$(Configuration.Split('_')[1])</CentralRevitVersion>
+    <CentralRevitMajor Condition="'$(CentralRevitVersion)' != ''">$(CentralRevitVersion.Split('.')[0])</CentralRevitMajor>
+  </PropertyGroup>
+  <ItemGroup>
+    <GlobalPackageReference Include="MinVer" Version="8.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageVersion Include="Nice3point.Revit.Api.RevitAPI" Version="$(CentralRevitVersion)" />
+    <PackageVersion Include="Nice3point.Revit.Api.RevitAPIUI" Version="$(CentralRevitVersion)" />
+  </ItemGroup>
+</Project>

@@ -15,17 +15,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Nice3point.TUnit.Revit" Version="$(MajorRevitVersion).*" />
+    <PackageReference Include="Nice3point.TUnit.Revit" />
     <!--
       TUnit's source generator emits a [ModuleInitializer]-attributed method in this assembly.
       System.Runtime.CompilerServices.ModuleInitializerAttribute only exists in the BCL from
       .NET 5 onward; the net48 configurations (Revit 2021-2024) need PolySharp's
-      polyfill for it, or the build fails with CS0122. revit.linter avoids this per-project
-      reference by making PolySharp a GlobalPackageReference in its (centrally managed)
-      Directory.Packages.props - this repo has no central package management, so it's pinned
-      here directly, on the one project that actually needs it.
+      polyfill for it, or the build fails with CS0122. The version is managed centrally in
+      Directory.Packages.props, on the one project that actually needs it.
     -->
-    <PackageReference Include="PolySharp" Version="1.16.0">
+    <PackageReference Include="PolySharp">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -35,7 +33,4 @@
     <ProjectReference Include="..\..\src\Revit.Sugar\Revit.Sugar.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Update="Polyfill" Version="11.4.0" />
-  </ItemGroup>
 </Project>

@@ -32,18 +32,15 @@ structure from those repos.
 ## Tech stack
 
 - .NET, built against `Nice3point.Revit.Api.RevitAPI` /
-  `Nice3point.Revit.Api.RevitAPIUI` (floating `$(MajorRevitVersion).*`, so each
-  major resolves to its latest stable API patch)
+  `Nice3point.Revit.Api.RevitAPIUI`; the package version follows the selected
+  build configuration (for example `Release_2026.4.10` uses `2026.4.10`)
 - MinVer (git-tag-based versioning)
 - Tests: **TUnit + `Nice3point.TUnit.Revit`** (`RevitThreadExecutor`),
   matching `revit.linter`'s `*.RevitTests` convention - **not**
   `xunit.v3`, unlike the other repos in this family
-- Central package management is not used; package versions are set per
-  `<PackageReference>`. `Nice3point.TUnit.Revit`
-  is versioned per Revit major version (e.g. `2025.x.y` for Revit 2025) -
-  pinned inline as `Version="$(MajorRevitVersion).*"` rather than via
-  `Directory.Packages.props`, since `revit.linter` centralizes that same
-  convention there but this repo doesn't use central package management.
+- Package versions are managed centrally in `Directory.Packages.props`;
+  test-only packages live in `tests/Directory.Packages.props`, including the
+  Revit-major-specific `Nice3point.TUnit.Revit` version.
 
 ## Documentation layout
 
