@@ -7,7 +7,7 @@ using TUnit.Core.Executors;
 namespace Revit.Sugar.RevitTests;
 
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores", Justification = "Test names use underscores to separate scenario and expected result.")]
-public sealed class ElementFilterUtilsTests : RevitApiTest
+internal sealed class ElementFilterUtilsTests : RevitApiTest
 {
     private Document? _document;
     private Level? _level;
@@ -40,9 +40,10 @@ public sealed class ElementFilterUtilsTests : RevitApiTest
     [Test]
     public async Task AllFilter_MatchesEveryElement()
     {
-        ElementFilter filter = ElementFilterUtils.AllFilter();
+        using ElementFilter filter = ElementFilterUtils.AllFilter();
+        using FilteredElementCollector collector = new(_document!);
 
-        ICollection<ElementId> matched = new FilteredElementCollector(_document!)
+        ICollection<ElementId> matched = collector
             .WherePasses(filter)
             .ToElementIds();
 
@@ -52,9 +53,10 @@ public sealed class ElementFilterUtilsTests : RevitApiTest
     [Test]
     public async Task EmptyFilter_MatchesNothing()
     {
-        ElementFilter filter = ElementFilterUtils.EmptyFilter();
+        using ElementFilter filter = ElementFilterUtils.EmptyFilter();
+        using FilteredElementCollector collector = new(_document!);
 
-        ICollection<ElementId> matched = new FilteredElementCollector(_document!)
+        ICollection<ElementId> matched = collector
             .WherePasses(filter)
             .ToElementIds();
 
@@ -64,9 +66,10 @@ public sealed class ElementFilterUtilsTests : RevitApiTest
     [Test]
     public async Task CategoryTypeFilter_MatchesOnlyRequestedCategoryType()
     {
-        ElementFilter modelFilter = ElementFilterUtils.CategoryTypeFilter(_document!, CategoryType.Model);
+        using ElementFilter modelFilter = ElementFilterUtils.CategoryTypeFilter(_document!, CategoryType.Model);
+        using FilteredElementCollector collector = new(_document!);
 
-        ICollection<ElementId> matched = new FilteredElementCollector(_document!)
+        ICollection<ElementId> matched = collector
             .WherePasses(modelFilter)
             .WhereElementIsNotElementType()
             .ToElementIds();
@@ -77,9 +80,10 @@ public sealed class ElementFilterUtilsTests : RevitApiTest
     [Test]
     public async Task CategoryTypeFilter_Inverse_ExcludesRequestedCategoryType()
     {
-        ElementFilter inverseModelFilter = ElementFilterUtils.CategoryTypeFilter(_document!, CategoryType.Model, inverse: true);
+        using ElementFilter inverseModelFilter = ElementFilterUtils.CategoryTypeFilter(_document!, CategoryType.Model, inverse: true);
+        using FilteredElementCollector collector = new(_document!);
 
-        ICollection<ElementId> matched = new FilteredElementCollector(_document!)
+        ICollection<ElementId> matched = collector
             .WherePasses(inverseModelFilter)
             .WhereElementIsNotElementType()
             .ToElementIds();

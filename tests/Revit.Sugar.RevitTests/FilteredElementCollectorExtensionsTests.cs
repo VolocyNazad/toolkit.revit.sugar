@@ -7,7 +7,7 @@ using TUnit.Core.Executors;
 namespace Revit.Sugar.RevitTests;
 
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores", Justification = "Test names use underscores to separate scenario and expected result.")]
-public sealed class FilteredElementCollectorExtensionsTests : RevitApiTest
+internal sealed class FilteredElementCollectorExtensionsTests : RevitApiTest
 {
     private Document? _document;
     private Level? _level;
@@ -40,10 +40,12 @@ public sealed class FilteredElementCollectorExtensionsTests : RevitApiTest
     [Test]
     public async Task OfClassGeneric_MatchesSameElementsAsOfClassWithType()
     {
-        ICollection<ElementId> viaGeneric = new FilteredElementCollector(_document!)
+        using FilteredElementCollector genericCollector = new(_document!);
+        ICollection<ElementId> viaGeneric = genericCollector
             .OfClass<Wall>()
             .ToElementIds();
-        ICollection<ElementId> viaType = new FilteredElementCollector(_document!)
+        using FilteredElementCollector typeCollector = new(_document!);
+        ICollection<ElementId> viaType = typeCollector
             .OfClass(typeof(Wall))
             .ToElementIds();
 
@@ -54,7 +56,9 @@ public sealed class FilteredElementCollectorExtensionsTests : RevitApiTest
     [Test]
     public async Task WhereElementIs_ForInstanceType_ReturnsOnlyInstances()
     {
-        ICollection<ElementId> walls = new FilteredElementCollector(_document!)
+        using FilteredElementCollector collector = new(_document!);
+
+        ICollection<ElementId> walls = collector
             .WhereElementIs<Wall>()
             .ToElementIds();
 
@@ -65,7 +69,9 @@ public sealed class FilteredElementCollectorExtensionsTests : RevitApiTest
     [Test]
     public async Task WhereElementIs_ForElementTypeSubtype_ReturnsOnlyTypes()
     {
-        ICollection<ElementId> wallTypes = new FilteredElementCollector(_document!)
+        using FilteredElementCollector collector = new(_document!);
+
+        ICollection<ElementId> wallTypes = collector
             .WhereElementIs<WallType>()
             .ToElementIds();
 

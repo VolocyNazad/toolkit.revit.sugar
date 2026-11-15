@@ -4,7 +4,7 @@ namespace Revit.Sugar;
 
 /// <summary>
 /// Extension members for <see cref="Autodesk.Revit.DB.ElementId"/> that hide the difference
-/// between <see cref="Autodesk.Revit.DB.ElementId.IntegerValue"/> (Revit versions before 2024)
+/// between <c>ElementId.IntegerValue</c> (Revit versions before 2024)
 /// and <c>ElementId.Value</c> (Revit 2024+).
 /// </summary>
 public static class ElementIdExtensions
@@ -20,7 +20,7 @@ public static class ElementIdExtensions
         /// <returns><see langword="true"/> if <paramref name="id"/> is the id of <paramref name="category"/>.</returns>
         public bool IsCategory(BuiltInCategory category)
         {
-#if BEFORE2024
+#if !AFTER2024
             return id.IntegerValue == (int)category;
 #else
             return id.Value == (long)category;
@@ -35,14 +35,14 @@ public static class ElementIdExtensions
         /// <returns>The <see cref="Autodesk.Revit.DB.BuiltInCategory"/> corresponding to this id.</returns>
         public BuiltInCategory ToBuiltInCategory()
         {
-#if BEFORE2024
+#if !AFTER2024
             return (BuiltInCategory)id.IntegerValue;
 #else
             return (BuiltInCategory)id.Value;
 #endif
         }
 
-#if BEFORE2024
+#if !AFTER2024
         /// <summary>
         /// Gets the numeric value of this id, as an <see langword="int"/> on Revit versions
         /// before 2024 (backed by <see cref="Autodesk.Revit.DB.ElementId.IntegerValue"/>).

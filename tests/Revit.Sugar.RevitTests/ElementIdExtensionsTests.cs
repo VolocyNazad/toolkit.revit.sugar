@@ -5,7 +5,7 @@ using Revit.Sugar;
 namespace Revit.Sugar.RevitTests;
 
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores", Justification = "Test names use underscores to separate scenario and expected result.")]
-public sealed class ElementIdExtensionsTests : RevitApiTest
+internal sealed class ElementIdExtensionsTests : RevitApiTest
 {
     [Test]
     public async Task IsCategory_WhenIdMatchesBuiltInCategory_ReturnsTrue()
@@ -31,7 +31,7 @@ public sealed class ElementIdExtensionsTests : RevitApiTest
     {
         ElementId wallsId = new(BuiltInCategory.OST_Walls);
 
-#if BEFORE2024
+#if !AFTER2024
         await Assert.That(wallsId.Value()).IsEqualTo(wallsId.IntegerValue);
 #else
         await Assert.That(wallsId.Value()).IsEqualTo(wallsId.Value);
