@@ -27,8 +27,9 @@ settings. The template is `.github/pull_request_template.md`; the required check
 
 ## Required checks
 
-- `build-and-test` must pass. It builds the solution with warnings as errors and runs the headless
-  tests through the project executables; a run that discovers no tests fails.
+- `build-and-test` must pass. It builds every Revit configuration in the matrix with warnings as
+  errors and documentation warnings promoted to errors; the tests that need a running Revit are
+  compiled but not executed in CI.
 - `repository-policy` must pass. It runs `./scripts/Validate-Repository.ps1` for the required files,
   navigation links, solution items and action pins, `./scripts/Update-Changelog.ps1 -Verify` for the
   pending fragments, and `./scripts/Verify-Release.ps1` for the `CHANGELOG.md` structure.
