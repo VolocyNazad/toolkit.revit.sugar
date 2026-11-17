@@ -17,3 +17,8 @@ dotnet_diagnostic.CA2000.severity = none
 
 [tests/Revit.Sugar.RevitTests/FilteredElementCollectorExtensionsTests.cs]
 dotnet_diagnostic.CA2000.severity = none
+
+# C# 14 extension blocks compile into a nested container type that the compiler generates. It cannot
+# be made internal without dropping the public extension API, so CA1034 cannot be satisfied here.
+[src/Revit.Sugar/*Extensions.cs]
+dotnet_diagnostic.CA1034.severity = none
