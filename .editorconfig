@@ -4,3 +4,21 @@ root = true
 charset = utf-8
 end_of_line = crlf
 trim_trailing_whitespace = true
+
+# Revit's LogicalOrFilter and LogicalAndFilter use the child filters they are constructed with for the
+# lifetime of the returned filter, so disposing the children would invalidate the result.
+[src/Revit.Sugar/ElementFilterUtils.cs]
+dotnet_diagnostic.CA2000.severity = none
+
+# The test model is created in a [Before(Test)] hook and closed in the matching [After(Test)] hook;
+# CA2000 cannot follow the ownership across the hook boundary.
+[tests/Revit.Sugar.RevitTests/ElementFilterUtilsTests.cs]
+dotnet_diagnostic.CA2000.severity = none
+
+[tests/Revit.Sugar.RevitTests/FilteredElementCollectorExtensionsTests.cs]
+dotnet_diagnostic.CA2000.severity = none
+
+# C# 14 extension blocks compile into a nested container type that the compiler generates. It cannot
+# be made internal without dropping the public extension API, so CA1034 cannot be satisfied here.
+[src/Revit.Sugar/*Extensions.cs]
+dotnet_diagnostic.CA1034.severity = none

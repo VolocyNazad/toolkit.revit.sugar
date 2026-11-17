@@ -39,7 +39,7 @@ public static class ElementFilterUtils
         doc = Guard.ThrowIfNull(doc, nameof(doc));
 
         Categories categories = doc.Settings.Categories;
-        ICollection<ElementId> ids = new List<ElementId>(categories.Size);
+        List<ElementId> ids = new(categories.Size);
         foreach (Category category in categories)
         {
             if (category.CategoryType == categoryType) ids.Add(category.Id);

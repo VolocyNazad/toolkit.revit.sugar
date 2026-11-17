@@ -5,13 +5,14 @@ using Revit.Sugar;
 namespace Revit.Sugar.RevitTests;
 
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores", Justification = "Test names use underscores to separate scenario and expected result.")]
-public sealed class UpdaterBuilderTests : RevitApiTest
+internal sealed class UpdaterBuilderTests : RevitApiTest
 {
     [Test]
     public async Task Build_AppliesAllConfiguredValues()
     {
-        var updaterId = new UpdaterId(
-            new AddInId(new Guid("22222222-2222-2222-2222-222222222222")),
+        using AddInId addInId = new(new Guid("22222222-2222-2222-2222-222222222222"));
+        using var updaterId = new UpdaterId(
+            addInId,
             new Guid("11111111-1111-1111-1111-111111111111"));
         var executed = false;
 

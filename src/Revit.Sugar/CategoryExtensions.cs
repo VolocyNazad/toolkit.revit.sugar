@@ -1,11 +1,11 @@
-﻿#if BEFORE2024
+﻿#if !AFTER2023
 using Autodesk.Revit.DB;
 
 namespace Revit.Sugar;
 
 /// <summary>
 /// Extension members for <see cref="Autodesk.Revit.DB.Category"/>, for Revit versions before
-/// 2024 where <see cref="Autodesk.Revit.DB.Category"/> has no built-in <c>BuiltInCategory</c>
+/// 2023 where <see cref="Autodesk.Revit.DB.Category"/> has no built-in <c>BuiltInCategory</c>
 /// accessor of its own.
 /// </summary>
 public static class CategoryExtensions
